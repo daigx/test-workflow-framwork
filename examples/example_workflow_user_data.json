@@ -1,0 +1,74 @@
+
+ {
+  "kind": "WorkflowUserData",
+  "metadata":{
+    "name": "expenseTest"
+  },
+  "spec": {
+    "params": {
+      "flowData": {},
+      "conditionalData": {
+        "steps.validateExpenseItems.outputs.decision": "",
+        "steps.managerApproval.outputs.decision": "",
+        "steps.hrApproval.outputs.decision": ""
+      }
+    },
+    "steps": [
+      {
+        "name": "submitExpense",
+        "data": {},
+        "dependencies": []
+      },
+      {
+        "name": "validateExpenseItems",
+        "data": {},
+        "dependencies": ["submitExpense"]
+      },
+      {
+        "name": "managerApproval",
+        "data": {},
+        "dependencies": ["validateExpenseItems"],
+        "when": "{{ steps.validateExpenseItems.outputs.decision }} == Y"
+      },
+      {
+        "name": "hrApproval",
+        "data": {},
+        "dependencies": ["managerApproval"],
+        "when": "{{ steps.managerApproval.outputs.decision }} == Y"
+      },
+      {
+        "name": "notifyUser01",
+        "data": {},
+        "dependencies": ["managerApproval"],
+        "when": "{{ steps.managerApproval.outputs.decision }} == N"
+      },
+      {
+        "name": "notifyUser02",
+        "data": {},
+        "dependencies": ["hrApproval"],
+        "when": "{{ steps.hrApproval.outputs.decision }} == N"
+      },
+      {
+        "name": "notifyUser03",
+        "data": {},
+        "dependencies": ["hrApproval"],
+        "when": "{{ steps.hrApproval.outputs.decision }} == Y"
+      },
+      {
+        "name": "filePaymentTicket",
+        "data": {},
+        "dependencies": ["notifyUser03"]
+      },
+      {
+        "name": "schedulePayment",
+        "data": {},
+        "dependencies": ["filePaymentTicket"]
+      },
+      {
+        "name": "sendPayment",
+        "data": {},
+        "dependencies": ["schedulePayment"]
+      }
+    ]
+  }
+}

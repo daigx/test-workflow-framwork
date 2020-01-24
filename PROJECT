@@ -1,0 +1,7 @@
+domain: example.com
+repo: testworkflowframwork
+resources:
+- group: testworkflowframwork
+  kind: TestWorkflow
+  version: v1
+version: "2"

@@ -1,0 +1,82 @@
+
+{
+  "kind": "Workflow",
+  "metadata":{
+    "name": "expenseTest"
+  },
+  "spec": {
+    "queue": [
+      [
+        {
+          "name": "submitExpense",
+          "result": "",
+          "status": "pending"
+        }
+      ],
+      [
+        {
+          "name": "validateExpenseItems",
+          "result": "",
+          "status": "pending"
+        }
+      ],
+      [
+        {
+          "name": "managerApproval",
+          "result": "",
+          "status": "pending",
+          "when": "{{ steps.validateExpenseItems.outputs.decision }} == Y"
+        }
+      ],
+      [
+        {
+          "name": "notifyUser01",
+          "result": "",
+          "status": "pending",
+          "when": "{{ steps.managerApproval.outputs.decision }} == N"
+        },
+        {
+          "name": "hrApproval",
+          "result": {},
+          "status": "pending",
+          "when": "{{ steps.managerApproval.outputs.decision }} == Y"
+        }
+      ],
+      [
+        {
+          "name": "notifyUser02",
+          "result": {},
+          "status": "pending",
+          "when": "{{ steps.hrApproval.outputs.decision }} == N"
+        },
+        {
+          "name": "notifyUser03",
+          "result": {},
+          "status": "pending",
+          "when": "{{ steps.hrApproval.outputs.decision }} == Y"
+        }
+      ],
+      [
+        {
+          "name": "filePaymentTicket",
+          "result": {},
+          "status": "pending"
+        }
+      ],
+      [
+        {
+          "name": "schedulePayment",
+          "result": {},
+          "status": "pending"
+        }
+      ],
+      [
+        {
+          "name": "sendPayment",
+          "result": {},
+          "status": "pending"
+        }
+      ]
+    ]
+  }
+}
